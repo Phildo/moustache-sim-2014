@@ -3,10 +3,10 @@ var Moustache = function()
   var self = this;
 
   var hairs = [];
-  for(var i = 0; i < 10; i++)
+  for(var i = 0; i < 1000; i++)
   {
     var h = new Hair();
-    h.randomizeAroundOrigin([Math.random()*640,Math.random()*320],100);
+    h.randomizeAroundOrigin([Math.random()*320+160,Math.random()*50+125],100);
     hairs[i] = h;
   }
   

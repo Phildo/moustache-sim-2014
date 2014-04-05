@@ -19,8 +19,8 @@ var Hair = function()
   }
 
   self.growth = 0.0;
-  self.growthrate = 0.01;
-  self.drawres = 0.05;
+  self.growthrate = 0.0001;
+  self.drawres = 0.1;
   self.color = "#000000";
 
   var spline = new Spline([[0.0,0.0],[0.0,0.0],[0.0,0.0]]);
@@ -72,6 +72,7 @@ var Hair = function()
   self.draw = function(canv)
   {
     canv.context.strokeStyle = self.color;
+    canv.context.lineWidth = 0.5;
     //canv.context.strokeRect(10,10,10,10);
 
     var step = 0;
