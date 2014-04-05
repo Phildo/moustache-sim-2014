@@ -10,9 +10,9 @@ var Hair = function()
     var newpt;
     while(d > r)
     {
-      newpt = {"x":pt.x,"y":pt,y}
-      newpt.x += Math.random()*2r-r;
-      newpt.y += Math.random()*2r-r;
+      newpt = [pt[0],pt[1]];
+      newpt[0] += Math.random()*2*r-r;
+      newpt[1] += Math.random()*2*r-r;
       d = Math.sqrt(Math.pow(pt.x-newpt.x,2)+Math.pow(pt.y-newpt.y,2));
     }
     return newpt;
@@ -20,8 +20,8 @@ var Hair = function()
 
   self.growth = 0.0;
   self.growthrate = 0.001;
+  self.drawres = 0.001;
   self.color = "#FFFFFF";
-  var dirty = false;
 
   var spline = new Spline([[0.0,0.0],[0.0,0.0],[0.0,0.0]]);
   self.setOrigin = function(x,y)
@@ -55,7 +55,6 @@ var Hair = function()
   self.setHairPts = function(pts)
   {
     spline.setPts(pts);
-    dirty = true;
   }
 
   self.tick = function()
@@ -63,15 +62,25 @@ var Hair = function()
     self.growth += self.growthrate;
   }
 
+  var pts = [[0,0],[0,0]]; //just so I don't have to re-allocate
   self.draw = function(canv)
   {
-    if(dirty)
+    var step = 0;
+    for(var i = 0; i <= self.growth; i+=self.drawres)
     {
-      for(var i = 0; i < self.growth; i+=self.growthrate)
-      {
-        
-      }
+      pts[step%2] = spline.ptForT(i);
+      if(step > 0) drawLine(pts[0],pts[1]);
+      step++;
     }
   }
+
+  function drawLine(pt1,pt2,canvas)
+  {
+    canvas.context.beginPath();
+    canvas.context.moveTo(pt1[0],pt1[1]);
+    canvas.context.lineTo(pt2[0],pt2[1]);
+    canvas.context.stroke();
+  }
+
 }
 
