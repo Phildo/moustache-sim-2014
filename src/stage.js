@@ -8,6 +8,7 @@ var Stage = function()
   this.drawCanv.context.strokeStyle = "#000000";
   this.drawCanv.context.font = "12px vg_font";
   this.dispCanv = new Canv(width,height);
+  this.dispCanv.id = "display_canvas";
   this.dispCanv.canvas.style.border = "1px solid black";
 
   this.draw = function()

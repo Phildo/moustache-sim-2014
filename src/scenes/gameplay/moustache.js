@@ -10,10 +10,10 @@ var Moustache = function()
     hairs[i] = h;
   }
   
-  self.tick = function()
+  self.tick = function(ih)
   {
     for(var i = 0; i < hairs.length; i++)
-      hairs[i].tick();
+      hairs[i].tick(ih);
   }
 
   self.draw = function(canv)

@@ -7,13 +7,13 @@ var GamePlayScene = function(game, canv)
 
   self.ready = function()
   {
-    ih = new InputHandler();
+    ih = new InputHandler(canv);
     mo = new Moustache();
   };
 
   self.tick = function()
   {
-    mo.tick();
+    mo.tick(ih);
   };
 
   self.draw = function()

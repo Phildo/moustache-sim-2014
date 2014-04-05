@@ -58,14 +58,48 @@ var Hair = function()
     var tip   = self.randomPtWithinROfPt(o,l);
     self.setHairPts([o,elbow,tip]);
   }
+  var no = false;
+  self.biasTowardVec = function(bx, by)
+  {
+    var orig = spline.pts[0];
+    var elbow = spline.pts[1];
+
+    var l = Math.sqrt(Math.pow(elbow[0]-orig[0],2)+Math.pow(elbow[1]-orig[1],2));
+    var newelbow = [(elbow[0]-orig[0]+bx)/l,(elbow[1]-orig[1]+by)/l];
+    var l2 = Math.sqrt(Math.pow(newelbow[0],2)+Math.pow(newelbow[1],2));
+    newelbow[0] /= l2;
+    newelbow[1] /= l2;
+    newelbow[0] *= l;
+    newelbow[1] *= l;
+    self.setElbow(orig[0]+newelbow[0],orig[1]+newelbow[1]);
+
+    var elbow = spline.pts[1];
+    var tip = spline.pts[2];
+
+    var l = Math.sqrt(Math.pow(tip[0]-elbow[0],2)+Math.pow(tip[1]-elbow[1],2));
+    var newtip = [(tip[0]-elbow[0]+bx)/l,(tip[1]-elbow[1]+by)/l];
+    var l2 = Math.sqrt(Math.pow(newtip[0],2)+Math.pow(newtip[1],2));
+    newtip[0] /= l2;
+    newtip[1] /= l2;
+    newtip[0] *= l;
+    newtip[1] *= l;
+    self.setTip(elbow[0]+newtip[0],elbow[1]+newtip[1]);
+
+    no = true;
+  }
   self.setHairPts = function(pts)
   {
     spline.setPts(pts);
   }
 
-  self.tick = function()
+  self.tick = function(ih)
   {
     self.growth += self.growthrate;
+    if(ih.mousedown && Math.sqrt(Math.pow(ih.mousepos.x-ih.prevmousepos.x,2)+Math.pow(ih.mousepos.y-ih.prevmousepos.y,2)) > 10)
+    {
+      self.biasTowardVec(ih.mousepos.x-ih.prevmousepos.x,ih.mousepos.y-ih.prevmousepos.y);
+      //self.biasTowardVec(0,0);
+    }
   }
 
   var pts = [[0,0],[0,0]]; //just so I don't have to re-allocate
@@ -73,7 +107,6 @@ var Hair = function()
   {
     canv.context.strokeStyle = self.color;
     canv.context.lineWidth = 0.5;
-    //canv.context.strokeRect(10,10,10,10);
 
     var step = 0;
     var tmppt;
