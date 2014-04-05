@@ -3,15 +3,23 @@ var Moustache = function()
   var self = this;
 
   var hairs = [];
+  for(var i = 0; i < 10; i++)
+  {
+    var h = new Hair();
+    h.randomizeAroundOrigin([Math.random()*640,Math.random()*320],100);
+    hairs[i] = h;
+  }
   
   self.tick = function()
   {
-
+    for(var i = 0; i < hairs.length; i++)
+      hairs[i].tick();
   }
 
   self.draw = function(canv)
   {
-
+    for(var i = 0; i < hairs.length; i++)
+      hairs[i].draw(canv);
   }
 }
 

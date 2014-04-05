@@ -19,9 +19,9 @@ var Hair = function()
   }
 
   self.growth = 0.0;
-  self.growthrate = 0.001;
-  self.drawres = 0.001;
-  self.color = "#FFFFFF";
+  self.growthrate = 0.01;
+  self.drawres = 0.05;
+  self.color = "#000000";
 
   var spline = new Spline([[0.0,0.0],[0.0,0.0],[0.0,0.0]]);
   self.setOrigin = function(x,y)
@@ -52,6 +52,12 @@ var Hair = function()
       [spline.pts[2][0],spline.pts[2][1]]
     ]);
   }
+  self.randomizeAroundOrigin = function(o,l)
+  {
+    var elbow = self.randomPtWithinROfPt(o,l);
+    var tip   = self.randomPtWithinROfPt(o,l);
+    self.setHairPts([o,elbow,tip]);
+  }
   self.setHairPts = function(pts)
   {
     spline.setPts(pts);
@@ -65,20 +71,31 @@ var Hair = function()
   var pts = [[0,0],[0,0]]; //just so I don't have to re-allocate
   self.draw = function(canv)
   {
+    canv.context.strokeStyle = self.color;
+    //canv.context.strokeRect(10,10,10,10);
+
     var step = 0;
-    for(var i = 0; i <= self.growth; i+=self.drawres)
+    var tmppt;
+    var i;
+    for(i = 0; i <= self.growth; i+=self.drawres)
     {
-      pts[step%2] = spline.ptForT(i);
-      if(step > 0) drawLine(pts[0],pts[1]);
+      tmppt = spline.ptForT(i);
+      pts[step%2] = [tmppt[0]+0.01,tmppt[1]+0.01];
+      if(step > 0) drawLine(pts[0][0],pts[0][1],pts[1][0],pts[1][1],canv)
       step++;
     }
+      i = self.growth;
+      tmppt = spline.ptForT(i);
+      pts[step%2] = [tmppt[0]+0.01,tmppt[1]+0.01];
+      if(step > 0) drawLine(pts[0][0],pts[0][1],pts[1][0],pts[1][1],canv)
+      step++;
   }
 
-  function drawLine(pt1,pt2,canvas)
+  function drawLine(ox,oy,ex,ey,canvas)
   {
     canvas.context.beginPath();
-    canvas.context.moveTo(pt1[0],pt1[1]);
-    canvas.context.lineTo(pt2[0],pt2[1]);
+    canvas.context.moveTo(ox,oy);
+    canvas.context.lineTo(ex,ey);
     canvas.context.stroke();
   }
 
