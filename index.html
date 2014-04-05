@@ -1,0 +1,31 @@
+<html>
+<head>
+<script type='text/javascript' src='src/utils/webgl-utils.js'></script>
+<script type="text/javascript" src="src/utils/canv.js"></script>
+<script type="text/javascript" src="src/utils/inputHandler.js"></script>
+<script type="text/javascript" src="src/stage.js"></script>
+<script type="text/javascript" src="src/game.js"></script>
+<script type="text/javascript" src="src/scenes/nullScene.js"></script>
+<script type="text/javascript" src="src/scenes/loading/loadingScene.js"></script>
+<script type="text/javascript" src="src/scenes/gameplay/gameplayScene.js"></script>
+<script type="text/javascript">
+var g;
+function begin()
+{
+  g = new Game();
+  g.begin();
+}
+
+window.addEventListener("load",begin,false);
+</script>
+</head>
+<body>
+
+<!-- The Stage -->
+<div id="stage_container" style="display:block; margin:50px auto 20px auto; width:640px;">
+  <img id="shadow" src="assets/shadow.png" style="display:block;"/>
+</div>
+
+</body>
+</html>
+
